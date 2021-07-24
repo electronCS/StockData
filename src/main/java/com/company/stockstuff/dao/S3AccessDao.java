@@ -1,6 +1,7 @@
 package com.company.stockstuff.dao;
 
-
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -14,31 +15,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class S3AccessDao {
+	
 	private static S3Client s3;
 	
+	private static final String ACCESS_KEY = "AKIATBSTAPXV3EBKH3WJ";
+	private static final String SECRET_KEY = "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";
+	
 	public S3AccessDao(Region region){
+		AwsBasicCredentials credentials = AwsBasicCredentials.create(
+			ACCESS_KEY,
+			SECRET_KEY);
 		s3 = S3Client.builder()
-	            .region(region)
-	            .build();
-		System.out.println(s3);
+            .credentialsProvider(StaticCredentialsProvider.create(credentials))
+            .region(region)
+            .build();
 	}
 	
-	public String putS3Object(String bucketName,
-        String objectKey,
-        String objectPath) {
-
+	public String putS3Object(
+			String bucketName,
+	        String objectKey,
+	        String objectPath) {
+		
 		try {
 			Map<String, String> metadata = new HashMap<>();
-			metadata.put("x-amz-meta-myVal", "test");
+			metadata.put("x-amz-meta-myVal","test");
 			
 			PutObjectRequest putOb = PutObjectRequest.builder()
-			.bucket(bucketName)
-			.key(objectKey)
-			.metadata(metadata)
-			.build();
+				.bucket(bucketName)
+				.key(objectKey)
+				.metadata(metadata)
+				.build();
 			
 			PutObjectResponse response = s3.putObject(putOb,
-			RequestBody.fromBytes(getObjectFile(objectPath)));
+				RequestBody.fromBytes(getObjectFile(objectPath)));
 			
 			return response.eTag();
 		
@@ -46,6 +55,7 @@ public class S3AccessDao {
 			System.err.println(e.getMessage());
 			System.exit(1);
 		}
+		
 		return "";
 	}
 	
@@ -74,5 +84,6 @@ public class S3AccessDao {
         }
         return bytesArray;
     }
+	
 }
 
