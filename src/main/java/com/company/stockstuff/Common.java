@@ -10,8 +10,8 @@ public class Common {
 		return new Date().getTime();
 	}
 	
-	public static long alignToHour(long n) {
-		return ((n/3600000)*3600000);
+	public static long alignToHour(long n) { // assuming n is in milliseconds
+		return ((n/MILLIS_IN_HOUR)*MILLIS_IN_HOUR);
 	}
 
 }
