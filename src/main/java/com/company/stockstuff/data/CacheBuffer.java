@@ -3,6 +3,7 @@ package com.company.stockstuff.data;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.company.stockstuff.App;
 import com.company.stockstuff.Common;
 
 public class CacheBuffer {
@@ -48,11 +49,20 @@ public class CacheBuffer {
 		for(int timestamp=head_timestamp;timestamp<=tail_timestamp;timestamp+=3600000) {
 			String name = assetName+"-"+timestamp;
 			try {
-				Entry entry = findEntry(name);
-				if(entry==null) {
-					entry = new Entry(name,Candle.IO.read(timestamp,assetName));
+				Candle[] data = null;
+				
+				if(timestamp<getAlignedTimestamp(new Date())) {
+					// if data was in past hours, collect it from filesystem or cache
+					Entry entry = findEntry(name);
+					if(entry==null) {
+						entry = new Entry(name,Candle.IO.read(timestamp,assetName));
+					}
+					data = entry.data;
+				} else {
+					// otherwise grab data from App.history
+					data = App.history.get(assetName);
 				}
-				Candle[] data = entry.data;
+				
 				int data_head = 0;
 				int data_tail = data.length;
 				if(timestamp==head_timestamp) {
