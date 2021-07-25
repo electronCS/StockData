@@ -56,9 +56,12 @@ public class Candle {
 		
 		public static Candle[] read(long timestamp, String assetName) throws IOException {
 			String path = assetName+"-"+timestamp+".dat";
+			byte[] data = S3AccessDao.getS3Object(path);
+			if(data==null) {
+				return null;
+			}
 			DataInputStream in = new DataInputStream(
-					new ByteArrayInputStream(
-					S3AccessDao.getS3Object(path)));
+					new ByteArrayInputStream(data));
 			Candle[] out = new Candle[3600];
 			for(int i=0;i<out.length;i++) {
 				out[i] = read(in);

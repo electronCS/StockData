@@ -31,12 +31,12 @@ public class CacheBuffer {
 		return null;
 	}
 	
-	public int getAlignedTimestamp(Date date) {
+	public int getAlignedTimestamp(Date date) { // next hour
 		return (int)Common.alignToHour(date.getTime())+1;
 	}
 	
-	public int getSubHourTimestamp(Date date) {
-		return (int)((date.getTime()%3600000)/1000);
+	public int getSubHourTimestamp(Date date) { // in seconds
+		return (int)((date.getTime()%Common.MILLIS_IN_HOUR)/1000);
 	}
 	
 	public Candle[] getRange(String assetName, Date head, Date tail) {

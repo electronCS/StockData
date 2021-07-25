@@ -69,8 +69,19 @@ public class App {
 				for(String assetName : candles.keySet()) {
 					Candle[] block = history.get(assetName);
 					
-					// add block if not already existing
+					// add block (in ram) if not already existing
 					if(block==null) {
+						/*
+						// check if block already was partially filled
+						block = Candle.IO.read(Common.alignToHour(endTime),assetName);
+						if(block==null) {
+							block = new Candle[Common.SECOND_IN_HOUR];
+							for(int i=0;i<block.length;i++) {
+								block[i] = new Candle();
+							}
+						}
+						history.put(assetName,block);
+						*/
 						block = new Candle[Common.SECOND_IN_HOUR];
 						for(int i=0;i<block.length;i++) {
 							block[i] = new Candle();
