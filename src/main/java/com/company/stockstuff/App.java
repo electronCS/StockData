@@ -13,6 +13,8 @@ public class App {
 	public static final TreeMap<String,Candle[]> history = new TreeMap<String,Candle[]>();
 	
     public static void main(String[] args) {
+    	String keypath = System.getProperty("user.dir")+"/key.txt";
+    	S3AccessDao.loadKey(keypath);
     	S3AccessDao.setBucket("stock-data-bucket-ahcc");
     	S3AccessDao.setRegion(Region.US_EAST_2);
     	

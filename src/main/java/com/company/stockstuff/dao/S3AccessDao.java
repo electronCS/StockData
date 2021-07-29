@@ -18,13 +18,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 public class S3AccessDao {
 
-	private static final String ACCESS_KEY = "AKIATBSTAPXV3EBKH3WJ";
-	private static final String SECRET_KEY = "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";
+	private static String ACCESS_KEY;
+	private static String SECRET_KEY;
 	
 	private static S3Client s3;
 	private static String bucketName;
+	
+	public static void loadKey(String path) {
+		JSONObject keyinfo = new JSONObject(new String(getObjectFile(path)));
+		ACCESS_KEY = keyinfo.getString("access_key");
+		SECRET_KEY = keyinfo.getString("secret_key");
+	}
 	
 	public static void setBucket(String name) {
 		bucketName = name;
