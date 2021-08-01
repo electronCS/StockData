@@ -53,13 +53,14 @@ public class S3AccessDao {
 	        byte[] data) {
 		
 		try {
+			/*
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put("x-amz-meta-myVal","test");
-			
+			*/
 			PutObjectRequest putOb = PutObjectRequest.builder()
 				.bucket(bucketName)
 				.key(objectKey)
-				.metadata(metadata)
+				//.metadata(metadata)
 				.build();
 			
 			PutObjectResponse response = s3.putObject(putOb,RequestBody.fromBytes(data));
@@ -67,11 +68,10 @@ public class S3AccessDao {
 			return response.eTag();
 		
 		} catch (S3Exception e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
+			//System.err.println(e.getMessage());
 		}
 		
-		return "";
+		return null;
 	}
 	
 	public static String putS3Object(
@@ -99,8 +99,7 @@ public class S3AccessDao {
 			return out.toByteArray();
 			
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
+			//System.err.println(e.getMessage());
 		}
 		
 		return null;
