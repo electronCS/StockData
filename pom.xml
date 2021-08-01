@@ -14,8 +14,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -30,37 +30,62 @@
 		<groupId>com.amazonaws</groupId>
 		<artifactId>aws-lambda-java-core</artifactId>
 		<version>1.2.1</version>
-	</dependency>
+	</dependency> 
+	
 	<dependency>
 		<groupId>com.amazonaws</groupId>
 		<artifactId>aws-lambda-java-events</artifactId>
 		<version>1.3.0</version>
 	</dependency>
 
+	
 	<dependency>
 		<groupId>com.amazonaws</groupId>
-		<artifactId>aws-java-sdk-dynamodb</artifactId>
-		<version>1.12.20</version>
-	</dependency>
-	
-			<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-s3</artifactId>
-			<version>1.12.31</version>
-			
-		</dependency>
+		<artifactId>aws-java-sdk-s3</artifactId>
+		<version>1.12.31</version>
+	</dependency> 
 		
 	<dependency>
-  <groupId>software.amazon.awssdk</groupId>
-  <artifactId>aws-sdk-java</artifactId>
-  <version>2.16.32</version>
-</dependency>
+	  <groupId>software.amazon.awssdk</groupId>
+	  <artifactId>aws-sdk-java</artifactId>
+	  <version>2.16.32</version>
+	</dependency>
 
   </dependencies>
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
+      
+      <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>com.company.stockstuff.App</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+    
+    
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-assembly-plugin</artifactId>
+  <configuration>
+    <archive>
+      <manifest>
+        <mainClass>com.company.stockstuff.App</mainClass>
+      </manifest>
+    </archive>
+  </configuration>
+</plugin>
+      
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
@@ -79,10 +104,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
         </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
+        
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>

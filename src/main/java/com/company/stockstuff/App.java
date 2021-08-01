@@ -15,11 +15,10 @@ public class App
     	String bucketName = "stock-data-bucket-ahcc";
     	
     	String objectKey = "test2.txt";
-    	String objectPath = "C:/Users/ChristopherCheng/Desktop/aws_xps/test2.txt";
+    	String objectPath = "/Users/alanhuang/Desktop/EC2_files/test.txt";
 
         String result = dao.putS3Object(bucketName, objectKey, objectPath);
         System.out.println("Tag information: "+result);
         
     }
 }
-

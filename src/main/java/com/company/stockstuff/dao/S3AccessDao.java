@@ -1,6 +1,5 @@
 package com.company.stockstuff.dao;
 
-
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -13,32 +12,38 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class S3AccessDao {
+	
 	private static S3Client s3;
 	
+	
 	public S3AccessDao(Region region){
+//		AwsBasicCredentials credentials = AwsBasicCredentials.create(
+//			ACCESS_KEY,
+//			SECRET_KEY);
 		s3 = S3Client.builder()
-	            .region(region)
-	            .build();
-		System.out.println(s3);
+            .region(region)
+            .build();
 	}
 	
-	public String putS3Object(String bucketName,
-        String objectKey,
-        String objectPath) {
-
+	public String putS3Object(
+			String bucketName,
+	        String objectKey,
+	        String objectPath) {
+		
 		try {
 			Map<String, String> metadata = new HashMap<>();
-			metadata.put("x-amz-meta-myVal", "test");
+			metadata.put("x-amz-meta-myVal","test");
 			
 			PutObjectRequest putOb = PutObjectRequest.builder()
-			.bucket(bucketName)
-			.key(objectKey)
-			.metadata(metadata)
-			.build();
+				.bucket(bucketName)
+				.key(objectKey)
+				.metadata(metadata)
+				.build();
 			
 			PutObjectResponse response = s3.putObject(putOb,
-			RequestBody.fromBytes(getObjectFile(objectPath)));
+				RequestBody.fromBytes(getObjectFile(objectPath)));
 			
 			return response.eTag();
 		
@@ -46,6 +51,7 @@ public class S3AccessDao {
 			System.err.println(e.getMessage());
 			System.exit(1);
 		}
+		
 		return "";
 	}
 	
@@ -74,5 +80,6 @@ public class S3AccessDao {
         }
         return bytesArray;
     }
+	
 }
 
